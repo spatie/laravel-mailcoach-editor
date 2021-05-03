@@ -4,3 +4,4 @@ export * from './listen';
 export * from './noop';
 export * from './query';
 export * from './transition';
+export * from './fetch';

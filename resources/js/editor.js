@@ -1,6 +1,6 @@
 import 'vite/dynamic-import-polyfill';
 
-import { $ } from './util';
+import {$, fetchHtml, jsonFetch, listen} from './util';
 import { showModal } from './components/modal';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
@@ -34,35 +34,6 @@ function confirmBeforeLeaveAndDestroyEditor(event) {
     window.removeEventListener('beforeunload', confirmBeforeLeaveAndDestroyEditor);
     window.editor.destroy();
     window.editor = undefined;
-}
-
-async function jsonFetch(route, data) {
-    const response = await fetch(route, {
-        method: 'POST',
-        body: data,
-        credentials: 'same-origin',
-        headers: {
-            'X-CSRF-Token': $('[name="_token"]').value,
-        },
-    })
-
-    return response.json();
-}
-
-async function fetchHtml(route, data) {
-    const response = await fetch(route, {
-        method: 'POST',
-        body: JSON.stringify({ data: data }),
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': $('[name="_token"]').value,
-        },
-    })
-
-    const json = await response.json();
-
-    return json.html;
 }
 
 function initEditor() {
@@ -161,11 +132,11 @@ function initEditor() {
         });
     });
 
-    $("[data-modal-trigger=\"edit-template\"]").addEventListener('click', (e) => {
+    $("[data-modal-trigger=\"edit-template\"]").addEventListener('click', () => {
         document.getElementById("structured_html[template]").value = $('#template').value;
     });
 
-    $("[data-modal-confirm=\"edit-template\"]").addEventListener('click', (e) => {
+    $("[data-modal-confirm=\"edit-template\"]").addEventListener('click', () => {
         $('#template').value = document.getElementById("structured_html[template]").value;
     });
 }

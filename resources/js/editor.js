@@ -57,7 +57,10 @@ function initEditor() {
 
         tools: {
             header: Header,
-            list: List,
+            list: {
+                class: List,
+                inlineToolbar: true,
+            },
             image: {
                 class: ImageTool,
                 config: {

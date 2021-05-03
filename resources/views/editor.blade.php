@@ -1,13 +1,8 @@
 @push('modals')
-    @production
-        @php
-            $manifest = json_decode(file_get_contents(public_path('vendor/mailcoach-editor/manifest.json')), true);
-        @endphp
-        <script type="module" src="/vendor/mailcoach-editor/{$manifest['resources/js/editor.js']['file']}"></script>
-    @else
-        <script type="module" src="http://localhost:3000/@vite/client"></script>
-        <script type="module" src="http://localhost:3000/resources/js/editor.js"></script>
-    @endproduction
+    @php
+        $manifest = json_decode(file_get_contents(public_path('vendor/mailcoach-editor/manifest.json')), true);
+    @endphp
+    <script type="module" src="/vendor/mailcoach-editor/{{ $manifest['resources/js/editor.js']['file'] }}"></script>
 @endpush
 <style>
     #editor-js h1 {

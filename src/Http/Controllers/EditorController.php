@@ -3,8 +3,8 @@
 namespace Spatie\MailcoachEditor\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\MailcoachEditor\Editor;
 use Spatie\MailcoachEditor\Models\Upload;
-use Spatie\MailcoachEditor\BlockRendererFactory;
 
 class EditorController
 {
@@ -12,16 +12,7 @@ class EditorController
     {
         $data = $request->get('data');
 
-        $html = "";
-        foreach ($data['blocks'] as $block) {
-            $renderer = BlockRendererFactory::create($block['type'], $block['data']);
-            $html .= $renderer->render();
-            $html .= "\n";
-        }
-
-        $html = view('mailcoach-editor::template', [
-            'content' => $html,
-        ])->render();
+        $html = Editor::renderBlocks($data['body']['blocks'], $data['template']);
 
         return response()->json(['html' => $html]);
     }
@@ -39,7 +30,7 @@ class EditorController
                 ->addMediaFromRequest('file')
                 ->toMediaCollection(
                     'default',
-                    config('mailcoach.editor.disk_name', config('medialibrary.disk_name', 'public')),
+                    config('mailcoach-editor.disk_name'),
                 );
         }
 
@@ -50,7 +41,7 @@ class EditorController
                 ->addMediaFromUrl($data['url'])
                 ->toMediaCollection(
                     'default',
-                    config('mailcoach.editor.disk_name', config('medialibrary.disk_name', 'public')),
+                    config('mailcoach-editor.disk_name'),
                 );
         }
 

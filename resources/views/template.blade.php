@@ -1,493 +1,394 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Inter:400,600|Staatliches&amp;display=swap"
-/>
-<style>
-    @media only screen and (max-width: 600px) {
-        .inner-body {
-            width: 100% !important;
+    <title>{{ config('app.name') }}</title>
+    <style>
+        /* -------------------------------------
+            GLOBAL RESETS
+        ------------------------------------- */
+
+        /*All the styling goes here*/
+
+        img {
+            border: none;
+            -ms-interpolation-mode: bicubic;
+            max-width: 100%;
+        }
+
+        body {
+            background-color: #f6f6f6;
+            font-family: sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%; }
+        table td {
+            font-family: sans-serif;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        /* -------------------------------------
+            BODY & CONTAINER
+        ------------------------------------- */
+
+        .body {
+            background-color: #f6f6f6;
+            width: 100%;
+        }
+
+        /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+        .container {
+            display: block;
+            margin: 0 auto !important;
+            /* makes it centered */
+            max-width: 580px;
+            padding: 10px;
+            width: 580px;
+        }
+
+        /* This should also be a block element, so that it will fill 100% of the .container */
+        .content {
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 580px;
+            padding: 10px;
+        }
+
+        /* -------------------------------------
+            HEADER, FOOTER, MAIN
+        ------------------------------------- */
+        .main {
+            background: #ffffff;
+            border-radius: 3px;
+            width: 100%;
+        }
+
+        .wrapper {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        .content-block {
+            padding-bottom: 10px;
+            padding-top: 10px;
         }
 
         .footer {
-            width: 100% !important;
+            clear: both;
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+            color: #999999;
+            font-size: 12px;
+            text-align: center;
         }
 
-        .responsive-img {
-            height: auto !important;
-            width: 100% !important;
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #000000;
+            font-family: sans-serif;
+            font-weight: 400;
+            line-height: 1.4;
+            margin: 0;
+            margin-bottom: 30px;
         }
-    }
 
-    @media only screen and (max-width: 500px) {
-        .button {
-            width: 100% !important;
+        h1 {
+            font-size: 35px;
+            font-weight: 300;
+            text-align: center;
+            text-transform: capitalize;
         }
-    }
-</style>
 
-<style>
-    /* Base */
+        p,
+        ul,
+        ol {
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            margin: 0;
+            margin-bottom: 15px;
+        }
+        p li,
+        ul li,
+        ol li {
+            list-style-position: inside;
+            margin-left: 5px;
+        }
 
-    body,
-    body *:not(html):not(style):not(br):not(tr):not(code) {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol";
-        box-sizing: border-box;
-    }
+        a {
+            color: #3498db;
+            text-decoration: underline;
+        }
 
-    body {
-        background-image: linear-gradient(to top, #fff 20%, #daf1f5);
-        background-repeat: no-repeat;
-        color: #2c1b1d;
-        height: 100%;
-        hyphens: auto;
-        line-height: 1.4;
-        margin: 0;
-        -moz-hyphens: none;
-        width: 100% !important;
-        -webkit-hyphens: none;
-        -webkit-text-size-adjust: none;
-        word-break: break-word;
-        min-height: 100vh;
-    }
+        /* -------------------------------------
+            BUTTONS
+        ------------------------------------- */
+        .btn {
+            box-sizing: border-box;
+            width: 100%; }
+        .btn > tbody > tr > td {
+            padding-bottom: 15px; }
+        .btn table {
+            width: auto;
+        }
+        .btn table td {
+            background-color: #ffffff;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .btn a {
+            background-color: #ffffff;
+            border: solid 1px #3498db;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #3498db;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            padding: 12px 25px;
+            text-decoration: none;
+            text-transform: capitalize;
+        }
 
-    p,
-    ol,
-    ul,
-    blockquote {
-        line-height: 1.5;
-        text-align: left;
-    }
+        .btn-primary table td {
+            background-color: #3498db;
+        }
 
-    blockquote {
-        border-left: 5px solid #daf1f5;
-        margin: 0;
-        margin-bottom: 16px;
-        padding-left: 16px;
-    }
+        .btn-primary a {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: #ffffff;
+        }
 
-    a {
-        color: #4530a8;
-    }
+        /* -------------------------------------
+            OTHER STYLES THAT MIGHT BE USEFUL
+        ------------------------------------- */
+        .last {
+            margin-bottom: 0;
+        }
 
-    .underline {
-        text-decoration: none;
-        background-image: linear-gradient(
-            0deg,
-            #f0de38 0,
-            #f0de38 4px,
-            transparent 5px,
-            transparent
-        );
-    }
+        .first {
+            margin-top: 0;
+        }
 
-    a img {
-        border: none;
-    }
+        .align-center {
+            text-align: center;
+        }
 
-    /* Typography */
+        .align-right {
+            text-align: right;
+        }
 
-    h1 {
-        color: #2c1b1d;
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 0;
-        margin-bottom: 35px;
-        text-align: left;
-    }
+        .align-left {
+            text-align: left;
+        }
 
-    h2 {
-        color: #2c1b1d;
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 0;
-        text-align: left;
-    }
+        .clear {
+            clear: both;
+        }
 
-    h3 {
-        color: #2c1b1d;
-        font-size: 14px;
-        font-weight: bold;
-        margin-top: 0;
-        text-align: left;
-    }
+        .mt0 {
+            margin-top: 0;
+        }
 
-    .part {
-        font-family: Staatliches, system-ui, -apple-system, BlinkMacSystemFont,
-        Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-        Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-        font-size: 21px;
-    }
+        .mb0 {
+            margin-bottom: 0;
+        }
 
-    ol {
-        border-left: solid 1px #000;
-        padding-left: 3rem;
-    }
+        .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+        }
 
-    li,
-    p {
-        color: #2c1b1d;
-        font-size: 16px;
-        line-height: 1.5em;
-        margin-top: 0;
-        text-align: left;
-    }
+        .powered-by a {
+            text-decoration: none;
+        }
 
-    p.sub {
-        font-size: 12px;
-    }
+        hr {
+            border: 0;
+            border-bottom: 1px solid #f6f6f6;
+            margin: 20px 0;
+        }
 
-    img {
-        max-width: 100%;
-        -ms-interpolation-mode: bicubic;
-        height: auto;
-    }
+        /* -------------------------------------
+            RESPONSIVE AND MOBILE FRIENDLY STYLES
+        ------------------------------------- */
+        @media only screen and (max-width: 620px) {
+            table[class=body] h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important;
+            }
+            table[class=body] p,
+            table[class=body] ul,
+            table[class=body] ol,
+            table[class=body] td,
+            table[class=body] span,
+            table[class=body] a {
+                font-size: 16px !important;
+            }
+            table[class=body] .wrapper,
+            table[class=body] .article {
+                padding: 10px !important;
+            }
+            table[class=body] .content {
+                padding: 0 !important;
+            }
+            table[class=body] .container {
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            table[class=body] .main {
+                border-left-width: 0 !important;
+                border-radius: 0 !important;
+                border-right-width: 0 !important;
+            }
+            table[class=body] .btn table {
+                width: 100% !important;
+            }
+            table[class=body] .btn a {
+                width: 100% !important;
+            }
+            table[class=body] .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important;
+            }
+        }
 
-    strong {
-        font-weight: 600;
-    }
+        /* -------------------------------------
+            PRESERVE THESE STYLES IN THE HEAD
+        ------------------------------------- */
+        @media all {
+            .ExternalClass {
+                width: 100%;
+            }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+                line-height: 100%;
+            }
+            .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important;
+            }
+            #MessageViewBody a {
+                color: inherit;
+                text-decoration: none;
+                font-size: inherit;
+                font-family: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+            }
+            .btn-primary table td:hover {
+                background-color: #34495e !important;
+            }
+            .btn-primary a:hover {
+                background-color: #34495e !important;
+                border-color: #34495e !important;
+            }
+        }
 
-    /* Layout */
-
-    .wrapper {
-        background-color: #daf1f5;
-        background-image: linear-gradient(to top, #fff 20%, #daf1f5);
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 100%;
-    }
-
-    .content {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 100%;
-    }
-
-    /* Header */
-
-    .header {
-        padding: 25px 0;
-        text-align: center;
-        opacity: 0.35;
-    }
-
-    .header a {
-        color: #2c1b1d;
-        text-decoration: none;
-    }
-
-    .mailcoach-logo {
-        height: 1.25rem;
-        width: auto;
-        vertical-align: middle;
-        margin-left: 0.15rem;
-        opacity: 0.75;
-    }
-
-    /* Body */
-
-    .body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 100%;
-    }
-
-    .inner-body {
-        background-color: #ffffff;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        margin: 0 auto;
-        padding: 0;
-        width: 570px;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 570px;
-    }
-
-    /* Subcopy */
-
-    .subcopy {
-        border-top: 1px solid #2c1b1d;
-        margin-top: 25px;
-        padding-top: 25px;
-    }
-
-    .subcopy p {
-        font-size: 12px;
-    }
-
-    /* Footer */
-
-    .footer {
-        margin: 0 auto;
-        padding: 0;
-        text-align: center;
-        width: 570px;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 570px;
-    }
-
-    .footer p {
-        color: #6b6a67;
-        font-size: 12px;
-        text-align: center;
-    }
-
-    .footer a {
-        color: #6b6a67;
-    }
-
-    /* Tables */
-
-    .table table {
-        margin: 30px auto;
-        width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 100%;
-    }
-
-    .table th {
-        border-bottom: 1px solid #edeff2;
-        padding-bottom: 8px;
-        margin: 0;
-    }
-
-    .table td {
-        color: #74787e;
-        font-size: 15px;
-        line-height: 18px;
-        padding: 10px 0;
-        margin: 0;
-    }
-
-    .content-cell {
-        padding: 35px;
-    }
-
-    /* Buttons */
-
-    .action {
-        margin: 30px auto;
-        padding: 0;
-        text-align: center;
-        width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        -premailer-width: 100%;
-    }
-
-    .button {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.5rem 1.5rem;
-        font-family: Staatliches, system-ui, -apple-system, BlinkMacSystemFont,
-        Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-        Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-        font-size: 1.25rem;
-        color: #fff;
-        background-color: #47286f;
-        border: none;
-        text-decoration: none;
-        text-align: center;
-    }
-
-    /* Panels */
-
-    .panel {
-        margin: 0 0 21px;
-    }
-
-    .panel-content {
-        background-color: #e4e2ed;
-        padding: 16px;
-    }
-
-    .panel-item {
-        padding: 0;
-    }
-
-    .panel-item p:last-of-type {
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    /* Tailwind helpers */
-
-    .text-4xl {
-        font-size: 2.25rem;
-    }
-
-    .text-2xl {
-        font-size: 1.5rem;
-    }
-
-    .text-sm {
-        font-size: 0.875rem;
-    }
-
-    .font-semibold {
-        font-weight: 600;
-    }
-
-    .font-normal {
-        font-weight: 400;
-    }
-
-    .text-gray-400 {
-        color: #918f8b;
-    }
-
-    /* Stats */
-
-    table.stats tr {
-        vertical-align: bottom;
-    }
-
-    table.stats td {
-        padding-right: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    table.stats a {
-        color: #2c1b1d;
-    }
-
-    code {
-        display: inline-block;
-        padding: 2px 10px;
-        font-family: monospace;
-        background-color: rgba(0, 0, 0, 0.1);
-        color: rgba(0, 0, 0, 0.5);
-        border-radius: 0.125rem;
-    }
-</style>
-
-<table
-    class="wrapper"
-    width="100%"
-    cellpadding="0"
-    cellspacing="0"
-    role="presentation"
->
+    </style>
+</head>
+<body class="">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
-        <td align="center">
-            <table
-                class="content"
-                width="100%"
-                cellpadding="0"
-                cellspacing="0"
-                role="presentation"
-            >
-                <tr>
-                    <td class="header">
-                        <a href="::webViewUrl::"> View in browser </a>
-                    </td>
-                </tr>
+        <td>&nbsp;</td>
+        <td class="container">
+            <div class="content">
 
-                <!-- Email Body -->
-                <tr>
-                    <td class="body" width="100%" cellpadding="0" cellspacing="0">
-                        <table
-                            class="inner-body"
-                            align="center"
-                            width="570"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                        >
-                            <tr>
-                                <td>
-                                    <a
-                                        href="https://front-line-php.com?utm_source=newsletter&utm_medium=email&utm_campaign=front-line-php"
-                                    >
-                                        <img
-                                            class="responsive-img"
-                                            alt="front-line-php.com"
-                                            width="570"
-                                            src="https://front-line-php.com/email/header.jpg"
-                                            style="max-width: 570px"
-                                        />
-                                    </a>
-                                </td>
-                            </tr>
+                <!-- START CENTERED WHITE CONTAINER -->
+                <table role="presentation" class="main">
 
-                            <!-- Body content -->
-                            <tr>
-                                <td class="content-cell">
-                                    {!! $content !!}
+                    <!-- START MAIN CONTENT AREA -->
+                    <tr>
+                        <td class="wrapper">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        ::content::
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-                                    <table
-                                        class="subcopy"
-                                        width="100%"
-                                        cellpadding="0"
-                                        cellspacing="0"
-                                        role="presentation"
-                                    >
-                                        <tr>
-                                            <td>
-                                                <p>
-                                                    You received this email because you subscribed at
-                                                    <a href="https://front-line-php.com">front-line-php.com</a
-                                                    >.
-                                                    <br />
-                                                    <a href="::unsubscribeUrl::">Unsubscribe</a>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                    <!-- END MAIN CONTENT AREA -->
+                </table>
+                <!-- END CENTERED WHITE CONTAINER -->
 
-                <tr>
-                    <td>
-                        <table
-                            class="footer"
-                            align="center"
-                            width="570"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                        >
-                            <tr>
-                                <td class="content-cell" align="center">
-                                    <p>
-                                        Powered by
-                                        <a href="https://mailcoach.app">
-                                            Mailcoach<img
-                                                class="mailcoach-logo"
-                                                alt="mailcoach"
-                                                src="https://mailcoach.app/emails/email-logo.png"
-                                            />
-                                        </a>
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                <!-- START FOOTER -->
+                <div class="footer">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="content-block">
+                                <br> Don't like these emails? <a href="::unsubscribeUrl::">Unsubscribe</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="content-block powered-by">
+                                Powered by
+                                <a href="https://mailcoach.app">
+                                    Mailcoach<img
+                                        width="15"
+                                        style="margin-left: 5px; position: relative; top:3px;"
+                                        class="mailcoach-logo"
+                                        alt="mailcoach"
+                                        src="https://mailcoach.app/emails/email-logo.png"
+                                    />
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- END FOOTER -->
+
+            </div>
         </td>
+        <td>&nbsp;</td>
     </tr>
 </table>
-</body></html>
+</body>
+</html>

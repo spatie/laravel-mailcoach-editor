@@ -10,10 +10,10 @@ class ImageRenderer extends Renderer
     {
         // @todo withBorder, withBackground, stretched options
         return <<<HTML
-        <figure>
+        <div>
             <img src="{$this->data['file']['url']}" alt="">
-            <figcaption>{$this->data['caption']}</figcaption>
-        </figure>
+            <p>{$this->data['caption']}</p>
+        </div>
         HTML;
     }
 }

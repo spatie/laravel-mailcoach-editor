@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MailcoachEditor\Http\Controllers\EditorController;
 use Spatie\MailcoachEditor\Models\Upload;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -27,10 +28,36 @@ class UploadControllerTest extends TestCase
         $this->authenticate();
 
         $this
-            ->postJson(route('mailcoach-editor.upload'), [
+            ->postJson(action([EditorController::class, 'upload']), [
                 'file' => UploadedFile::fake()->image('my-upload.jpg', 100, 100),
             ])
-            ->assertSuccessful()->assertJson(['url' => 'http://localhost/storage/1/conversions/my-upload-image.jpg']);
+            ->assertSuccessful()->assertJson([
+                'success' => 1,
+                'file' => [
+                    'url' => 'http://localhost/storage/1/conversions/my-upload-image.jpg'
+                ],
+            ]);
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals(1, Media::count());
+        $this->assertEquals(1, Upload::first()->getMedia()->count());
+    }
+
+    /** @test */
+    public function it_uploads_files_from_an_url()
+    {
+        $this->authenticate();
+
+        $this
+            ->postJson(action([EditorController::class, 'upload']), [
+                'url' => 'http://placehold.it/100/100',
+            ])
+            ->assertSuccessful()->assertJson([
+                'success' => 1,
+                'file' => [
+                    'url' => 'http://localhost/storage/1/conversions/100-image.png'
+                ],
+            ]);
 
         $this->assertEquals(1, Upload::count());
         $this->assertEquals(1, Media::count());
@@ -43,7 +70,7 @@ class UploadControllerTest extends TestCase
         $this->authenticate();
 
         $this
-            ->postJson(route('mailcoach-editor.upload'), [
+            ->postJson(action([EditorController::class, 'upload']), [
                 'file' => UploadedFile::fake()->create('my-upload.jpg', 100, 'text/csv'),
             ])
             ->assertStatus(422)->assertJsonValidationErrors('file');
@@ -56,7 +83,7 @@ class UploadControllerTest extends TestCase
     public function it_will_not_allow_an_upload_if_the_guard_does_not_permit_it()
     {
         $this
-            ->postJson(route('mailcoach-editor.upload'), [
+            ->postJson(action([EditorController::class, 'upload']), [
                 'file' => UploadedFile::fake()->image('my-upload.jpg', 100, 100),
             ])
             ->assertUnauthorized();

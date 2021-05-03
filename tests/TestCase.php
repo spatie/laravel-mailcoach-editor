@@ -2,8 +2,8 @@
 
 namespace Spatie\MailcoachEditor\Tests;
 
-use CreateMailcoachTables;
 use CreateMailcoachEditorTables;
+use CreateMailcoachTables;
 use CreateMediaTable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Route;

@@ -1,0 +1,61 @@
+{
+    "name": "spatie/laravel-mailcoach-editor",
+    "description": "An Editor editor package for Mailcoach",
+    "keywords": [
+        "spatie",
+        "laravel-mailcoach-editor",
+        "editor.js"
+    ],
+    "homepage": "https://github.com/spatie/laravel-mailcoach-editor",
+    "authors": [
+        {
+            "name": "Rias",
+            "email": "rias@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.0",
+        "ext-json": "*",
+        "spatie/laravel-mailcoach": "^4.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.4",
+        "symfony/var-dumper": "^5.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Spatie\\MailcoachEditor\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spatie\\MailcoachEditor\\Tests\\": "tests",
+            "Spatie\\Mailcoach\\Database\\Factories\\": "vendor/spatie/laravel-mailcoach/database/factories"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Spatie\\MailcoachEditor\\MailcoachEditorServiceProvider"
+            ]
+        }
+    }
+}

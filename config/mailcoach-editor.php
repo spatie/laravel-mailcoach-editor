@@ -16,6 +16,7 @@ return [
         'delimiter' => \Spatie\MailcoachEditor\Renderer\DelimiterRenderer::class,
         'image' => \Spatie\MailcoachEditor\Renderer\ImageRenderer::class,
         'code' => \Spatie\MailcoachEditor\Renderer\CodeRenderer::class,
+        'button' => \Spatie\MailcoachEditor\Renderer\ButtonRenderer::class,
     ],
 
     /*

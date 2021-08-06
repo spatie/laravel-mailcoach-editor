@@ -12,6 +12,7 @@ import ImageTool from '@editorjs/image';
 import Table from 'editorjs-table';
 import InlineCode from '@editorjs/inline-code';
 import Code from './tools/code';
+import Button from './tools/button/button';
 
 document.addEventListener('turbolinks:load', initEditor);
 document.addEventListener('load', initEditor);
@@ -88,6 +89,7 @@ function initEditor() {
                 class: Table,
             },
             code: Code,
+            button: Button,
             inlineCode: {
                 class: InlineCode,
                 shortcut: 'CMD+SHIFT+M',

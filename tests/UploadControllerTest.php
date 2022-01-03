@@ -34,7 +34,7 @@ class UploadControllerTest extends TestCase
             ->assertSuccessful()->assertJson([
                 'success' => 1,
                 'file' => [
-                    'url' => 'http://localhost/storage/1/conversions/my-upload-image.jpg'
+                    'url' => 'http://localhost/storage/1/conversions/my-upload-image.jpg',
                 ],
             ]);
 
@@ -50,12 +50,12 @@ class UploadControllerTest extends TestCase
 
         $this
             ->postJson(action([EditorController::class, 'upload']), [
-                'url' => 'http://placehold.it/100/100',
+                'url' => 'https://placekitten.com/100/100',
             ])
             ->assertSuccessful()->assertJson([
                 'success' => 1,
                 'file' => [
-                    'url' => 'http://localhost/storage/1/conversions/100-image.png'
+                    'url' => 'http://localhost/storage/1/conversions/100-image.jpeg',
                 ],
             ]);
 
@@ -91,7 +91,7 @@ class UploadControllerTest extends TestCase
 
     protected function authenticate(): void
     {
-        Auth::login(new User);
+        Auth::login(new User());
 
         Gate::define('viewMailcoach', fn () => true);
     }

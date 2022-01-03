@@ -42,13 +42,13 @@ abstract class TestCase extends Orchestra
     {
         $app['config']->set('database.default', 'testing');
 
-        include_once __DIR__.'/../vendor/spatie/laravel-mailcoach/database/migrations/create_mailcoach_tables.php.stub';
+        include_once __DIR__.'/../../../vendor/spatie/laravel-mailcoach/database/migrations/create_mailcoach_tables.php.stub';
         (new CreateMailcoachTables())->up();
 
-        include_once __DIR__.'/../database/migrations/create_mailcoach_editor_tables.php.stub';
+        include_once __DIR__ . '/../database/migrations/create_mailcoach_editor_tables.php.stub';
         (new CreateMailcoachEditorTables())->up();
 
-        include_once __DIR__.'/../vendor/spatie/laravel-mailcoach/database/migrations/create_media_table.php.stub';
+        include_once __DIR__.'/../../../vendor/spatie/laravel-mailcoach/database/migrations/create_media_table.php.stub';
         (new CreateMediaTable())->up();
     }
 }

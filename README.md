@@ -4,7 +4,7 @@ This package is an optional add on for [Mailcoach](https://mailcoach.app).
  
 When installed, it adds [Editor.js](https://editorjs.io), a beautiful block based editor, to Mailcoach. 
 
-![screenshot](./docs/screenshot.png)
+![screenshot](docs/screenshot.png)
 
 ## Support us
 

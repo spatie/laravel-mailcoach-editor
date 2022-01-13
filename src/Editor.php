@@ -34,6 +34,9 @@ class Editor implements AbstractEditor
             }
         }
 
+        // Replace this in the generated html as Editor.js likes to automatically add the protocol to links
+        $html = str_replace('http://::', '::', $html);
+
         return str_replace('::content::', $html, $template);
     }
 }

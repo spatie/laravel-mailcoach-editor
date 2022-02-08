@@ -74,9 +74,7 @@
     <x-mailcoach::button id="save" :label="__('Save content')"/>
     <x-mailcoach::button-secondary data-modal-trigger="edit-template" :label="__('Edit template')"/>
     <x-mailcoach::button-secondary id="preview" :label="__('Preview')"/>
-    @if ($showTestButton)
-        <x-mailcoach::button-secondary data-modal-trigger="send-test" :label="__('Send Test')"/>
-    @endif
+    <x-mailcoach::button-secondary data-modal-trigger="send-test" :label="__('Send Test')"/>
 </div>
 
 @push('modals')

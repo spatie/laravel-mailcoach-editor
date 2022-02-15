@@ -29,7 +29,7 @@ class EditorController
             $media = $upload
                 ->addMediaFromRequest('file')
                 ->toMediaCollection(
-                    'default',
+                    config('mailcoach-editor.collection_name', 'default'),
                     config('mailcoach-editor.disk_name'),
                 );
         }
@@ -40,7 +40,7 @@ class EditorController
             $media = $upload
                 ->addMediaFromUrl($data['url'])
                 ->toMediaCollection(
-                    'default',
+                    config('mailcoach-editor.collection_name', 'default'),
                     config('mailcoach-editor.disk_name'),
                 );
         }

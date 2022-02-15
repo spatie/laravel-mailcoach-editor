@@ -75,7 +75,7 @@ listen('click', '[data-modal-backdrop]', ({ event, target }) => {
     }
 });
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('turbo:load', () => {
     $$('[data-modal]')
         .filter(modal => !modal.classList.contains('hidden'))
         .forEach(modal => {

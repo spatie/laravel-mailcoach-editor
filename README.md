@@ -19,7 +19,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You'll find the documentation for this package [inside the Mailcoach docs](https://spatie.be/docs/laravel-mailcoach/v4/choosing-an-editor/editor).
 
 ## Testing
-
+ 
 ```bash
 composer test
 ```

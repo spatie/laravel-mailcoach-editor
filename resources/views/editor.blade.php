@@ -58,8 +58,8 @@
     <div class="bg-white shadow-md min-h-full py-6 rounded-md">
         <div id="editor-js"
              data-structured-html="{{ $body ?? '' }}"
-             data-route="{{ action([\Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'render']) }}"
-             data-upload="{{ action([\Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'upload']) }}"
+             data-route="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'render']) }}"
+             data-upload="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'upload']) }}"
         ></div>
         @error('html')
             <p class="form-error" role="alert">{{ $message }}</p>

@@ -1,94 +1,182 @@
-@push('modals')
-    @php
-        try {
-            $manifest = json_decode(file_get_contents(public_path('vendor/mailcoach-editor/manifest.json')), true);
-        } catch (Exception $e) {
-            $manifest = null;
+@push('endhead')
+    <style>
+        #editor-js h1 {
+            font-weight: 800;
+            font-size: 36px;
+            margin-bottom: 32px;
+            line-height: 40px;
         }
-    @endphp
-    @if ($manifest)
-        <script type="module" src="/vendor/mailcoach-editor/{{ $manifest['resources/js/editor.js']['file'] }}"></script>
-    @else
-        <script type="module" src="http://localhost:3000/@vite/client"></script>
-        <script type="module" src="http://localhost:3000/resources/js/editor.js"></script>
-    @endif
+
+        #editor-js h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            line-height: 32px;
+        }
+
+        #editor-js h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            line-height: 32px;
+        }
+
+        #editor-js h4 {
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            line-height: 24px;
+        }
+
+        .cdx-input {
+            padding: 5px 10px;
+            font-size: 15px;
+        }
+
+        .ce-block__content .table-row {
+            display: flex !important;
+            flex-direction: row !important;
+        }
+    </style>
 @endpush
-<style>
-    #editor-js h1 {
-        font-weight: 800;
-        font-size: 36px;
-        margin-bottom: 32px;
-        line-height: 40px;
-    }
 
-    #editor-js h2 {
-        font-size: 24px;
-        font-weight: 700;
-        margin-top: 48px;
-        margin-bottom: 24px;
-        line-height: 32px;
-    }
+<div>
+    <script>
+        function upload(data) {
+            return fetch('{{ action(\Spatie\Mailcoach\Http\Api\Controllers\UploadsController::class) }}', {
+                method: 'POST',
+                body: data,
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+            }).then(response => response.json());
+        }
 
-    #editor-js h3 {
-        font-size: 20px;
-        font-weight: 600;
-        margin-top: 32px;
-        margin-bottom: 12px;
-        line-height: 32px;
-    }
+        window.init = function() {
+            const editor = new EditorJS({
+                holder: this.$refs.editor,
+                data: this.json,
+                autofocus: true,
+                placeholder: '{{ __('Write something awesome!') }}',
+                logLevel: 'ERROR',
+                tools: {
+                    header: Header,
+                    list: {
+                        class: List,
+                        inlineToolbar: true,
+                    },
+                    image: {
+                        class: ImageTool,
+                        config: {
+                            uploader: {
+                                uploadByFile(file) {
+                                    const data = new FormData();
+                                    data.append('file', file);
 
-    #editor-js h4 {
-        font-weight: 600;
-        margin-top: 24px;
-        margin-bottom: 8px;
-        line-height: 24px;
-    }
+                                    return upload(data);
+                                },
 
-    .cdx-input {
-        padding: 5px 10px;
-        font-size: 15px;
-    }
+                                uploadByUrl(url) {
+                                    const data = new FormData();
+                                    data.append('url', url);
 
-    .ce-block__content .table-row {
-        display: flex !important;
-        flex-direction: row !important;
-    }
-</style>
-<div class="prose border rounded-md bg-gray-100 px-8 py-8" style="max-width: 50rem; padding-top: 2rem; padding-bottom: 2rem;">
-    <div class="bg-white shadow-md min-h-full py-6 rounded-md">
-        <div id="editor-js"
-             data-structured-html="{{ $body ?? '' }}"
-             data-route="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'render']) }}"
-             data-upload="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'upload']) }}"
-        ></div>
-        @error('html')
-            <p class="form-error" role="alert">{{ $message }}</p>
-        @enderror
-    </div>
-</div>
+                                    return upload(data);
+                                }
+                            }
+                        }
+                    },
+                    quote: Quote,
+                    delimiter: Delimiter,
+                    raw: RawTool,
+                    table: {
+                        class: Table,
+                    },
+                    code: CodeTool,
+                    //button: Button,
+                    inlineCode: {
+                        class: InlineCode,
+                        shortcut: 'CMD+SHIFT+M',
+                    },
+                },
 
-<input type="hidden" id="body" name="structured_html[body]" value="{{ old('structured_html.body', $body ?? '') }}">
-<input type="hidden" id="template" name="structured_html[template]" value="{{ old('structured_html.template', $template ?? '') }}">
-<input type="hidden" id="html" name="html" value="{{ old('html', $html) }}" data-html-preview-source>
-<div class="form-buttons">
-    <x-mailcoach::button id="save" :label="__('Save content')"/>
-    <x-mailcoach::button-secondary data-modal-trigger="edit-template" :label="__('Edit template')"/>
-    <x-mailcoach::button-secondary id="preview" :label="__('Preview')"/>
-    @if ($showTestButton)
-        <x-mailcoach::button-secondary data-modal-trigger="send-test" :label="__('Send Test')"/>
-    @endif
-</div>
+                onChange: () => {
+                    const self = this;
+                    editor.save().then((outputData) => {
+                        self.json = outputData;
 
-@push('modals')
-    <x-mailcoach::modal :title="__('Edit template')" name="edit-template" large>
-        <div class="p-6">
-            <p class="mb-6">{!! __('Make sure to include a <code>::content::</code> placeholder where the Editor‘s content should go.') !!}</p>
+                        fetch('{{ action(\Spatie\MailcoachEditor\Http\Controllers\RenderEditorController::class) }}', {
+                            method: 'POST',
+                            body: JSON.stringify(outputData),
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-Token': '{{ csrf_token() }}',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(({ html }) => this.html = html);
+                    });
+                }
+            });
+        }
+    </script>
 
-            <x-mailcoach::html-field name="structured_html[template]" :value="old('structured_html.template', $template ?? '')" />
-
-            <div class="form-buttons">
-                <x-mailcoach::button data-modal-confirm="edit-template" type="button" :label=" __('Save')" />
-            </div>
+    @if (! $model instanceof \Spatie\Mailcoach\Domain\Campaign\Models\Template)
+        <div class="mb-6">
+            <x-mailcoach::template-chooser />
         </div>
-    </x-mailcoach::modal>
-@endpush
+    @endif
+
+    <div class="prose border rounded-md bg-gray-100 px-8 py-8" style="max-width: 50rem; padding-top: 2rem; padding-bottom: 2rem;">
+        <div>
+            @if($template?->containsPlaceHolders())
+                <div>
+                    @foreach($template->placeHolderNames() as $placeHolderName)
+                        <div class="form-field max-w-full mb-6" wire:key="{{ $placeHolderName }}">
+                            <label class="label mb-2" for="field_{{ $placeHolderName }}">
+                                {{ \Illuminate\Support\Str::of($placeHolderName)->snake(' ')->ucfirst() }}
+                            </label>
+
+                            <div class="bg-white shadow-md min-h-full py-6 rounded-md">
+                                <div wire:ignore x-data="{
+                                    html: @entangle('templateFieldValues.' . $placeHolderName . '.html'),
+                                    json: @entangle('templateFieldValues.' . $placeHolderName . '.json'),
+                                    init: init,
+                                }">
+                                    <div x-ref="editor"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div>
+                    <label class="label mb-2" for="field_html">
+                        HTML
+                    </label>
+
+                    <div class="bg-white shadow-md min-h-full py-6 rounded-md">
+                        <div wire:ignore x-data="{
+                            html: @entangle('templateFieldValues.html.html'),
+                            json: @entangle('templateFieldValues.html.json'),
+                            init: init,
+                        }">
+                            <div x-ref="editor"></div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    @if ($model instanceof \Spatie\Mailcoach\Domain\Campaign\Models\Campaign)
+        <x-mailcoach::campaign-replacer-help-texts/>
+    @elseif ($model instanceof \Spatie\Mailcoach\Domain\Automation\Models\AutomationMail)
+        <x-mailcoach::automation-mail-replacer-help-texts/>
+    @endif
+
+    <x-mailcoach::editor-buttons :preview-html="$fullHtml" :model="$model" />
+</div>

@@ -24,8 +24,10 @@ class EditorController
             'url' => ['nullable', 'url', 'required_without:file'],
         ]);
 
+        /** @var Upload $upload */
+        $upload = Upload::create();
+        
         if (isset($data['file'])) {
-            $upload = Upload::create();
             $media = $upload
                 ->addMediaFromRequest('file')
                 ->toMediaCollection(
@@ -35,8 +37,6 @@ class EditorController
         }
 
         if (isset($data['url'])) {
-            /** @var Upload $upload */
-            $upload = Upload::create();
             $media = $upload
                 ->addMediaFromUrl($data['url'])
                 ->toMediaCollection(

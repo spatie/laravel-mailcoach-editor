@@ -3,7 +3,9 @@
 namespace Spatie\MailcoachEditor\Renderer;
 
 use Highlight\Highlighter;
+
 use function HighlightUtilities\getStyleSheet;
+
 use Spatie\MailcoachEditor\Renderer;
 
 class CodeRenderer extends Renderer

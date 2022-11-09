@@ -2,29 +2,67 @@
 
 namespace Spatie\MailcoachEditor;
 
-use Spatie\Mailcoach\Domain\Campaign\Models\Concerns\HasHtmlContent;
-use Spatie\Mailcoach\Domain\Campaign\Models\Template;
-use Spatie\Mailcoach\Domain\Shared\Support\Editor\Editor as AbstractEditor;
-use Spatie\Mailcoach\Domain\TransactionalMail\Models\TransactionalMailTemplate;
+use Illuminate\Contracts\View\View;
+use Spatie\Mailcoach\Domain\Shared\Support\TemplateRenderer;
+use Spatie\Mailcoach\Http\App\Livewire\EditorComponent;
 
-class Editor implements AbstractEditor
+class Editor extends EditorComponent
 {
-    public function render(HasHtmlContent $model): string
-    {
-        $structured_html = json_decode($model->getStructuredHtml(), true);
-        $body = $structured_html['body'] ?? '';
-        $template = $structured_html['template'] ?? view('mailcoach-editor::template')->render();
+    public static bool $supportsTemplates = false;
 
-        return view('mailcoach-editor::editor', [
-            'html' => $model->getHtml(),
-            'body' => $body,
-            'template' => $template,
-            'model' => $model,
-            'showTestButton' => ! $model instanceof Template && ! $model instanceof TransactionalMailTemplate,
-        ])->render();
+    public function render(): View
+    {
+        if (! $this->templateId) {
+            $template = self::getTemplateClass()::first();
+
+            $this->templateId = $template?->id;
+            $this->template = $template;
+        }
+
+        if ($this->template?->containsPlaceHolders()) {
+            foreach ($this->template->placeHolderNames() as $placeHolderName) {
+                if (! is_array($this->templateFieldValues[$placeHolderName] ?? '')) {
+                    $this->templateFieldValues[$placeHolderName] = [
+                        'json' => $this->templateFieldValues[$placeHolderName] ?? '',
+                    ];
+                }
+
+                $this->templateFieldValues[$placeHolderName]['html'] ??= '';
+                $this->templateFieldValues[$placeHolderName]['json'] ??= '';
+            }
+        } else {
+            if (! is_array($this->templateFieldValues['html'] ?? '')) {
+                $this->templateFieldValues['html'] = [
+                    'json' => $this->templateFieldValues['html'] ?? '',
+                ];
+            }
+
+            $this->templateFieldValues['html']['html'] ??= '';
+            $this->templateFieldValues['html']['json'] ??= '';
+        }
+
+        return view('mailcoach-editor::editor');
     }
 
-    public static function renderBlocks(array $blocks, string $template): string
+    public function renderFullHtml()
+    {
+        if (! $this->template) {
+            $this->fullHtml = $this->templateFieldValues['html']['html'] ?? '';
+
+            return;
+        }
+
+        $templateRenderer = (new TemplateRenderer($this->template?->html ?? ''));
+        $this->fullHtml = $templateRenderer->render(collect($this->templateFieldValues)->map(function ($values) {
+            if (is_string($values)) {
+                return $values;
+            }
+
+            return $values['html'];
+        })->toArray());
+    }
+
+    public static function renderBlocks(array $blocks): string
     {
         $html = "";
         foreach ($blocks as $block) {
@@ -38,8 +76,6 @@ class Editor implements AbstractEditor
         }
 
         // Replace this in the generated html as Editor.js likes to automatically add the protocol to links
-        $html = str_replace('http://::', '::', $html);
-
-        return str_replace('::content::', $html, $template);
+        return str_replace('http://::', '::', $html);
     }
 }

@@ -18,11 +18,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "scrivo/highlight.php": "^v9.18",
-        "spatie/laravel-mailcoach": "^5.2",
-        "spatie/laravel-package-tools": "^1.6"
+        "spatie/laravel-mailcoach": "^6.0",
+        "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
         "orchestra/testbench": "^7.0",

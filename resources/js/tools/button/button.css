@@ -1,0 +1,31 @@
+.cdx-button-icon svg {
+    transform: rotate(180deg);
+}
+
+.cdx-button {
+    margin: 0;
+    margin-bottom: 10px;
+    text-align: left !important;
+}
+
+.cdx-button__text {
+    margin-bottom: 10px;
+}
+
+.cdx-button__url {}
+
+.cdx-button [contentEditable=true][data-placeholder]::before{
+    position: absolute;
+    content: attr(data-placeholder);
+    color: #707684;
+    font-weight: normal;
+    opacity: 0;
+}
+
+.cdx-button [contentEditable=true][data-placeholder]:empty::before {
+    opacity: 1;
+}
+
+.cdx-button [contentEditable=true][data-placeholder]:empty:focus::before {
+    opacity: 0;
+}

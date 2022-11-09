@@ -1,5 +1,7 @@
 <?php
 
-use Spatie\MailcoachEditor\Http\Controllers\RenderEditorController;
+use Spatie\MailcoachEditor\Http\Controllers\EditorController;
 
-Route::post('render', '\\' . RenderEditorController::class);
+Route::post('render', ['\\' . EditorController::class, 'render']);
+Route::post('upload', ['\\' . EditorController::class, 'upload']);
+

@@ -1,112 +1,94 @@
-<div class="form-grid">
-    <script>
-        function upload(data) {
-            return fetch('{{ action(\Spatie\Mailcoach\Http\Api\Controllers\UploadsController::class) }}', {
-                method: 'POST',
-                body: data,
-                credentials: 'same-origin',
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}',
-                },
-            }).then(response => response.json());
+@push('modals')
+    @php
+        try {
+            $manifest = json_decode(file_get_contents(public_path('vendor/mailcoach-editor/manifest.json')), true);
+        } catch (Exception $e) {
+            $manifest = null;
         }
-
-        window.init = function() {
-            const editor = new EditorJS({
-                holder: this.$refs.editor,
-                data: this.json,
-                autofocus: true,
-                placeholder: '{{ __('Write something awesome!') }}',
-                logLevel: 'ERROR',
-                tools: {
-                    header: {
-                        class: Header,
-                        config: {
-                            levels: [1, 2, 3],
-                        }
-                    },
-                    list: {
-                        class: List,
-                        inlineToolbar: true,
-                    },
-                    image: {
-                        class: ImageTool,
-                        config: {
-                            uploader: {
-                                uploadByFile(file) {
-                                    const data = new FormData();
-                                    data.append('file', file);
-
-                                    return upload(data);
-                                },
-
-                                uploadByUrl(url) {
-                                    const data = new FormData();
-                                    data.append('url', url);
-
-                                    return upload(data);
-                                }
-                            }
-                        }
-                    },
-                    quote: Quote,
-                    delimiter: Delimiter,
-                    raw: RawTool,
-                    table: {
-                        class: Table,
-                    },
-                    code: CodeTool,
-                    //button: Button,
-                    inlineCode: {
-                        class: InlineCode,
-                        shortcut: 'CMD+SHIFT+M',
-                    },
-                },
-
-                onChange: () => {
-                    const self = this;
-                    this.$refs.editor.dirty = true;
-                    editor.save().then((outputData) => {
-                        self.json = outputData;
-
-                        fetch('{{ action(\Spatie\MailcoachEditor\Http\Controllers\RenderEditorController::class) }}', {
-                            method: 'POST',
-                            body: JSON.stringify(outputData),
-                            credentials: 'same-origin',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-Token': '{{ csrf_token() }}',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(({ html }) => this.html = html);
-                    });
-                }
-            });
-        }
-    </script>
-
-    @if ($model->hasTemplates())
-        <x-mailcoach::template-chooser :clearable="false" />
+    @endphp
+    @if ($manifest)
+        <script type="module" src="/vendor/mailcoach-editor/{{ $manifest['resources/js/editor.js']['file'] }}"></script>
+    @else
+        <script type="module" src="http://localhost:3000/@vite/client"></script>
+        <script type="module" src="http://localhost:3000/resources/js/editor.js"></script>
     @endif
+@endpush
+<style>
+    #editor-js h1 {
+        font-weight: 800;
+        font-size: 36px;
+        margin-bottom: 32px;
+        line-height: 40px;
+    }
 
-    @foreach($template?->fields() ?? [['name' => 'html', 'type' => 'editor']] as $field)
-        <x-mailcoach::editor-fields :name="$field['name']" :type="$field['type']" :label="$field['name'] === 'html' ? 'Content' : null">
-            <x-slot name="editor">
-                <div class="markup markup-lists markup-links markup-code pr-16 max-w-[750px]">
-                    <div class="px-6 py-4 input bg-white" wire:ignore x-data="{
-                        html: @entangle('templateFieldValues.' . $field['name'] . '.html'),
-                        json: @entangle('templateFieldValues.' . $field['name'] . '.json'),
-                        init: init,
-                    }">
-                        <div x-ref="editor" data-dirty-check></div>
-                    </div>
-                </div>
-            </x-slot>
-        </x-mailcoach::editor-fields>
-    @endforeach
+    #editor-js h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 48px;
+        margin-bottom: 24px;
+        line-height: 32px;
+    }
 
-    <x-mailcoach::replacer-help-texts :model="$model" />
+    #editor-js h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 32px;
+        margin-bottom: 12px;
+        line-height: 32px;
+    }
 
-    <x-mailcoach::editor-buttons :preview-html="$fullHtml" :model="$model" />
+    #editor-js h4 {
+        font-weight: 600;
+        margin-top: 24px;
+        margin-bottom: 8px;
+        line-height: 24px;
+    }
+
+    .cdx-input {
+        padding: 5px 10px;
+        font-size: 15px;
+    }
+
+    .ce-block__content .table-row {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+</style>
+<div class="prose border rounded-md bg-gray-100 px-8 py-8" style="max-width: 50rem; padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="bg-white shadow-md min-h-full py-6 rounded-md">
+        <div id="editor-js"
+             data-structured-html="{{ $body ?? '' }}"
+             data-route="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'render']) }}"
+             data-upload="{{ action(['\\' . \Spatie\MailcoachEditor\Http\Controllers\EditorController::class, 'upload']) }}"
+        ></div>
+        @error('html')
+            <p class="form-error" role="alert">{{ $message }}</p>
+        @enderror
+    </div>
 </div>
+
+<input type="hidden" id="body" name="structured_html[body]" value="{{ old('structured_html.body', $body ?? '') }}">
+<input type="hidden" id="template" name="structured_html[template]" value="{{ old('structured_html.template', $template ?? '') }}">
+<input type="hidden" id="html" name="html" value="{{ old('html', $html) }}" data-html-preview-source>
+<div class="form-buttons">
+    <x-mailcoach::button id="save" :label="__('Save content')"/>
+    <x-mailcoach::button-secondary data-modal-trigger="edit-template" :label="__('Edit template')"/>
+    <x-mailcoach::button-secondary id="preview" :label="__('Preview')"/>
+    @if ($showTestButton)
+        <x-mailcoach::button-secondary data-modal-trigger="send-test" :label="__('Send Test')"/>
+    @endif
+</div>
+
+@push('modals')
+    <x-mailcoach::modal :title="__('Edit template')" name="edit-template" large>
+        <div class="p-6">
+            <p class="mb-6">{!! __('Make sure to include a <code>::content::</code> placeholder where the Editor‘s content should go.') !!}</p>
+
+            <x-mailcoach::html-field name="structured_html[template]" :value="old('structured_html.template', $template ?? '')" />
+
+            <div class="form-buttons">
+                <x-mailcoach::button data-modal-confirm="edit-template" type="button" :label=" __('Save')" />
+            </div>
+        </div>
+    </x-mailcoach::modal>
+@endpush

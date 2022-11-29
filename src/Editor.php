@@ -58,7 +58,7 @@ class Editor extends EditorComponent
                 return $values;
             }
 
-            return $values['html'];
+            return $values['html'] ?? '';
         })->toArray());
     }
 

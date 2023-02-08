@@ -56,7 +56,7 @@
                         class: Table,
                     },
                     code: CodeTool,
-                    //button: Button,
+                    button: AnyButton,
                     inlineCode: {
                         class: InlineCode,
                         shortcut: 'CMD+SHIFT+M',

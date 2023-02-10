@@ -40,5 +40,6 @@ class MailcoachEditorServiceProvider extends PackageServiceProvider
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/table@latest');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/code@latest');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest');
+        Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/editorjs-button@1.0.4');
     }
 }

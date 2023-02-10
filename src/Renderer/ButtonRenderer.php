@@ -18,7 +18,7 @@ class ButtonRenderer extends Renderer
                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                         <td>
-                                            <a href="{$this->data['url']}" class="button button-primary" target="_blank" rel="noopener">{$this->data['text']}</a>
+                                            <a href="{$this->data['link'] ?? $this->data['url'] ?? ''}" class="button button-primary" target="_blank" rel="noopener">{$this->data['text']}</a>
                                         </td>
                                     </tr>
                                 </table>

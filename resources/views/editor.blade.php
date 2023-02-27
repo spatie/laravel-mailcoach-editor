@@ -1,4 +1,14 @@
 <div class="form-grid">
+    <style>
+        .btn.btn--default {
+            color: #fff;
+        }
+
+        .btn.btn--default:hover {
+            color: #fff;
+            background: #0a59da;
+        }
+    </style>
     <script>
         function upload(data) {
             return fetch('{{ action(\Spatie\Mailcoach\Http\Api\Controllers\UploadsController::class) }}', {

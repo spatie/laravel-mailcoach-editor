@@ -8,6 +8,8 @@ class ButtonRenderer extends Renderer
 {
     public function render(): string
     {
+        $link = $this->data['link'] ?? $this->data['url'] ?? '';
+
         return <<<HTML
         <table class="btn btn-primary" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
@@ -18,7 +20,7 @@ class ButtonRenderer extends Renderer
                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                         <td>
-                                            <a href="{$this->data['link'] ?? $this->data['url'] ?? ''}" class="button button-primary" target="_blank" rel="noopener">{$this->data['text']}</a>
+                                            <a href="{$link}" class="button button-primary" target="_blank" rel="noopener">{$this->data['text']}</a>
                                         </td>
                                     </tr>
                                 </table>

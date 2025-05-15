@@ -32,7 +32,7 @@ class MailcoachEditorServiceProvider extends PackageServiceProvider
 
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/header@latest');
-        Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/list@latest');
+        Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/list@1.10.0');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/image@latest');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/quote@latest');
         Mailcoach::editorScript(Editor::class, 'https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest');
